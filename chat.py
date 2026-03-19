@@ -2,12 +2,9 @@ import os
 import json
 import time
 from typing import List, Dict
-
 from dotenv import load_dotenv
 from openai import OpenAI, AuthenticationError, RateLimitError, APIConnectionError, APIError
-
 from token_utils import count_tokens, estimate_cost, check_context_fit
-
 
 class ChatSession:
     def __init__(self, client: OpenAI, model: str = "gpt-4o-mini"):
