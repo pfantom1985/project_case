@@ -15,16 +15,16 @@ class ChatSession:
 
     def add_system_prompt(self, system_prompt: str) -> None:
         self.messages = [{"role": "system", "content": system_prompt}]
-        print(f"✅ Системная подсказка: {system_prompt[:60]}...")
+        print(f"Системная подсказка: {system_prompt[:60]}...")
 
     def check_context_warning(self) -> bool:
         context = check_context_fit(self.messages, self.model)
         usage_percent = context["input_tokens"] / context["context_window"] * 100
 
         if usage_percent > 80:
-            print(f"⚠️  Контекст: {usage_percent:.1f}% ({context['input_tokens']:,}/{context['context_window']:,})")
+            print(f"Контекст: {usage_percent:.1f}% ({context['input_tokens']:,}/{context['context_window']:,})")
             if not context["fits"]:
-                print("❌ История слишком большая!")
+                print("История слишком большая!")
             return False
         return True
 
@@ -34,7 +34,8 @@ class ChatSession:
 
         # DEBUG: тест без API
         if user_input.strip().lower() == "test":
-            print("\n🤖 DEBUG ответ:")
+
+            print("\nDEBUG ответ:")
             full_response = "Тестовый ответ. Все функции работают!"
             print(full_response)
 
@@ -45,7 +46,7 @@ class ChatSession:
             completion_tokens = count_tokens(full_response, self.model)
             cost = estimate_cost(prompt_tokens, completion_tokens, self.model)
             self.session_cost += cost["total_cost"]
-            print(f"📊 DEBUG: ${cost['total_cost']:.6f}")
+            print(f"DEBUG: ${cost['total_cost']:.6f}")
             return
 
         self.messages.append({"role": "user", "content": user_input})
@@ -53,7 +54,7 @@ class ChatSession:
         if not self.check_context_warning():
             return
 
-        print("\n🤖 Модель отвечает...")
+        print("\nМодель отвечает...")
 
         try:
             stream = self.client.chat.completions.create(
@@ -79,27 +80,27 @@ class ChatSession:
             cost = estimate_cost(prompt_tokens, completion_tokens, self.model)
             self.session_cost += cost["total_cost"]
 
-            print(f"\n📊 Вход: {prompt_tokens:,} (${cost['input_cost']:.6f})")
+            print(f"\nВход: {prompt_tokens:,} (${cost['input_cost']:.6f})")
             print(f"   Выход: {completion_tokens:,} (${cost['output_cost']:.6f})")
             print(f"   Сессия: ${self.session_cost:.6f}")
 
         except AuthenticationError:
-            print("\n❌ Проверьте API-ключ в .env")
+            print("\nПроверьте API-ключ в .env")
         except RateLimitError as e:
             if retry_count >= 3:
-                print(f"\n❌ RateLimitError (3/3): {e}")
+                print(f"\nRateLimitError (3/3): {e}")
                 print("   Квота исчерпана. Чат остановлен.")
                 return
-            print(f"\n⏳ Попытка {retry_count+1}/3: {e}")
+            print(f"\nПопытка {retry_count+1}/3: {e}")
             time.sleep(2 ** retry_count)  # 2, 4, 8 сек
             self.send_message(user_input, retry_count + 1)
             return
         except APIConnectionError:
-            print("\n❌ Нет интернета")
+            print("\nНет интернета")
         except APIError as e:
-            print(f"\n❌ API: {e}")
+            print(f"\nAPI: {e}")
         except Exception as e:
-            print(f"\n❌ Ошибка: {type(e).__name__}: {e}")
+            print(f"\nОшибка: {type(e).__name__}: {e}")
 
 
 def main() -> None:
@@ -107,7 +108,7 @@ def main() -> None:
     api_key = os.getenv("OPENAI_API_KEY")
 
     if not api_key:
-        print("❌ OPENAI_API_KEY не найден в .env")
+        print("OPENAI_API_KEY не найден в .env")
         return
 
     client = OpenAI(api_key=api_key)
@@ -119,9 +120,9 @@ def main() -> None:
     chat = ChatSession(client)
     chat.add_system_prompt(system_prompt)
 
-    print("\n💬 Чат запущен!")
-    print("• 'test' — без API")
-    print("• 'exit' — выход\n")
+    print("\nЧат запущен!")
+    print("  'test'  — тест без API")
+    print("  'exit'  — выход\n")
 
     while True:
         try:
