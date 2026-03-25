@@ -8,10 +8,10 @@ def analyze_file(file_path: Path) -> None:
     try:
         text = file_path.read_text(encoding="utf-8")  # UTF-8 для русского текста
     except FileNotFoundError:
-        print(f"❌ Файл '{file_path}' не найден.")
+        print(f"Файл '{file_path}' не найден.")
         return
     except UnicodeDecodeError:
-        print(f"❌ Не удалось прочитать '{file_path}' (проблема с кодировкой).")
+        print(f"Не удалось прочитать '{file_path}' (проблема с кодировкой).")
         return
 
     num_chars = len(text)
@@ -19,14 +19,14 @@ def analyze_file(file_path: Path) -> None:
 
     chars_per_token = num_chars / num_tokens if num_tokens > 0 else 0
 
-    print(f"\n📄 Анализ файла: {file_path.name}")
+    print(f"\nАнализ файла: {file_path.name}")
     print("=" * 60)
     print(f"  Символов: {num_chars:,}")
     print(f"  Токенов (gpt-4o-mini): {num_tokens:,}")
     print(f"  Символов/токен: {chars_per_token:.1f}")
 
     models = ["gpt-4o-mini", "gpt-4o", "o3-mini"]
-    print("\n💰 Оценка стоимости (completion = input):")
+    print("\nОценка стоимости (completion = input):")
     print("Модель        | Input $  | Output $ | Total $")
     print("-" * 40)
 

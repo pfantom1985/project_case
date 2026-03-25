@@ -3,8 +3,15 @@ import json
 import time
 from typing import List, Dict
 from dotenv import load_dotenv
-from openai import OpenAI, AuthenticationError, RateLimitError, APIConnectionError, APIError
+from openai import (
+    OpenAI,
+    AuthenticationError,
+    RateLimitError,
+    APIConnectionError,
+    APIError,
+)
 from token_utils import count_tokens, estimate_cost, check_context_fit
+
 
 class ChatSession:
     def __init__(self, client: OpenAI, model: str = "gpt-4o-mini"):
@@ -22,7 +29,10 @@ class ChatSession:
         usage_percent = context["input_tokens"] / context["context_window"] * 100
 
         if usage_percent > 80:
-            print(f"Контекст: {usage_percent:.1f}% ({context['input_tokens']:,}/{context['context_window']:,})")
+            print(
+                f"Контекст: {usage_percent:.1f}% "
+                f"({context['input_tokens']:,}/{context['context_window']:,})"
+            )
             if not context["fits"]:
                 print("История слишком большая!")
             return False
@@ -30,23 +40,6 @@ class ChatSession:
 
     def send_message(self, user_input: str, retry_count: int = 0) -> None:
         if not user_input.strip():
-            return
-
-        # DEBUG: тест без API
-        if user_input.strip().lower() == "test":
-
-            print("\nDEBUG ответ:")
-            full_response = "Тестовый ответ. Все функции работают!"
-            print(full_response)
-
-            self.messages.append({"role": "user", "content": user_input})
-            self.messages.append({"role": "assistant", "content": full_response})
-
-            prompt_tokens = count_tokens(json.dumps(self.messages[:-1]), self.model)
-            completion_tokens = count_tokens(full_response, self.model)
-            cost = estimate_cost(prompt_tokens, completion_tokens, self.model)
-            self.session_cost += cost["total_cost"]
-            print(f"DEBUG: ${cost['total_cost']:.6f}")
             return
 
         self.messages.append({"role": "user", "content": user_input})
@@ -74,8 +67,10 @@ class ChatSession:
 
             self.messages.append({"role": "assistant", "content": full_response})
 
-            # Статистика
-            prompt_tokens = count_tokens(json.dumps(self.messages[:-1]), self.model)
+            prompt_tokens = count_tokens(
+                json.dumps(self.messages[:-1], ensure_ascii=False),
+                self.model,
+            )
             completion_tokens = count_tokens(full_response, self.model)
             cost = estimate_cost(prompt_tokens, completion_tokens, self.model)
             self.session_cost += cost["total_cost"]
@@ -91,10 +86,9 @@ class ChatSession:
                 print(f"\nRateLimitError (3/3): {e}")
                 print("   Квота исчерпана. Чат остановлен.")
                 return
-            print(f"\nПопытка {retry_count+1}/3: {e}")
+            print(f"\nПопытка {retry_count + 1}/3: {e}")
             time.sleep(2 ** retry_count)  # 2, 4, 8 сек
             self.send_message(user_input, retry_count + 1)
-            return
         except APIConnectionError:
             print("\nНет интернета")
         except APIError as e:
@@ -113,7 +107,9 @@ def main() -> None:
 
     client = OpenAI(api_key=api_key)
 
-    system_prompt = input("Системная подсказка (Enter=Python tutor): ").strip()
+    system_prompt = input(
+        "Системная подсказка (Enter=Python tutor): "
+    ).strip()
     if not system_prompt:
         system_prompt = "You are a helpful Python programming assistant."
 
@@ -121,18 +117,17 @@ def main() -> None:
     chat.add_system_prompt(system_prompt)
 
     print("\nЧат запущен!")
-    print("  'test'  — тест без API")
     print("  'exit'  — выход\n")
 
     while True:
         try:
             user_input = input("Вы: ").strip()
             if user_input.lower() in ["exit", "quit", "выход"]:
-                print(f"\n👋 Итого: ${chat.session_cost:.6f}")
+                print(f"\nИтого: ${chat.session_cost:.6f}")
                 break
             chat.send_message(user_input)
         except KeyboardInterrupt:
-            print("\n👋 Прервано")
+            print("\nПрервано")
             break
 
 
