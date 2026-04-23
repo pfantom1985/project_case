@@ -10,10 +10,12 @@ __pycache__/
 # PyCharm / JetBrains IDE
 .idea/
 
-# (опционально) байткод и временные файлы
+# Байткод и тестовые файлы (опционально)
 *.pyc
 *.pyo
 *.pyd
 *.log
 .DS_Store
 tests/
+archive/
+screenshots/

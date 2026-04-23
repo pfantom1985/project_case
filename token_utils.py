@@ -56,15 +56,12 @@ def estimate_cost(
 
 
 def check_context_fit(
-    messages: List[Dict],
+    messages: List[Dict[str, str]],
     model: str = "gpt-4o-mini",
     max_output_tokens: int = 4096,
 ) -> Dict:
+
     # Проверяет, помещается ли история сообщений в контекстное окно модели.
-    # Args:
-    #     messages: Список сообщений [{"role": "user", "content": "..."}, ...]
-    #     model: Название модели
-    #     max_output_tokens: Максимум токенов для ответа (резерв)
     CONTEXT_WINDOWS = {
         "gpt-4o-mini": 128_000,
         "gpt-4o": 128_000,

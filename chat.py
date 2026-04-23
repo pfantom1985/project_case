@@ -12,17 +12,19 @@ from openai import (
 )
 from token_utils import count_tokens, estimate_cost, check_context_fit
 
-
 class ChatSession:
+
     def __init__(self, client: OpenAI, model: str = "gpt-4o-mini"):
         self.client = client
         self.model = model
         self.messages: List[Dict[str, str]] = []
         self.session_cost = 0.0
 
+
     def add_system_prompt(self, system_prompt: str) -> None:
         self.messages = [{"role": "system", "content": system_prompt}]
         print(f"Системная подсказка: {system_prompt[:60]}...")
+
 
     def check_context_warning(self) -> bool:
         context = check_context_fit(self.messages, self.model)
@@ -37,6 +39,7 @@ class ChatSession:
                 print("История слишком большая!")
             return False
         return True
+
 
     def send_message(self, user_input: str, retry_count: int = 0) -> None:
         if not user_input.strip():
@@ -80,7 +83,7 @@ class ChatSession:
             print(f"   Сессия: ${self.session_cost:.6f}")
 
         except AuthenticationError:
-            print("\nПроверьте API-ключ в .env")
+            print("\nПроверьте свой API-ключ в .env")
         except RateLimitError as e:
             if retry_count >= 3:
                 print(f"\nRateLimitError (3/3): {e}")
@@ -90,7 +93,7 @@ class ChatSession:
             time.sleep(2 ** retry_count)  # 2, 4, 8 сек
             self.send_message(user_input, retry_count + 1)
         except APIConnectionError:
-            print("\nНет интернета")
+            print("\nПроверьте подключение к интернету")
         except APIError as e:
             print(f"\nAPI: {e}")
         except Exception as e:
