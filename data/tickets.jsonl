@@ -1,0 +1,8 @@
+{"case_id":"ticket_01","message":"Здравствуйте, я не могу войти в аккаунт после смены пароля. Письмо для восстановления не приходит.","expected_category":"account_access","expected_needs_human":false}
+{"case_id":"ticket_02","message":"My card was charged twice for the same subscription. Please help me understand which payment is valid.","expected_category":"billing","expected_needs_human":true}
+{"case_id":"ticket_03","message":"The mobile app crashes every time I open the dashboard after the latest update.","expected_category":"technical_issue","expected_needs_human":false}
+{"case_id":"ticket_04","message":"Мне срочно нужен доступ сегодня: у нас демо через час, а система показывает ошибку 500 при входе.","expected_category":"technical_issue","expected_needs_human":true}
+{"case_id":"ticket_05","message":"Can you add dark mode and keyboard shortcuts in the next version?","expected_category":"feature_request","expected_needs_human":false}
+{"case_id":"ticket_06","message":"Почему в счёте указана сумма выше, чем на странице тарифа? Номер счёта INV-2048.","expected_category":"billing","expected_needs_human":true}
+{"case_id":"ticket_07","message":"I am unhappy with the service quality and want someone to review my case personally.","expected_category":"complaint","expected_needs_human":true}
+{"case_id":"ticket_08","message":"У меня проблема с оплатой, но я не уверен, что это связано с вашим сервисом. Могу прислать скриншот?","expected_category":"billing","expected_needs_human":false}

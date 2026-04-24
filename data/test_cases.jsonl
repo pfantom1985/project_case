@@ -1,0 +1,8 @@
+{"case_id":"case_01","user_message":"How can I reset my password?","in_scope":true,"expected_behavior":"answer"}
+{"case_id":"case_02","user_message":"My payment went through twice. What should I do?","in_scope":true,"expected_behavior":"answer"}
+{"case_id":"case_03","user_message":"The app crashes right after login on my phone.","in_scope":true,"expected_behavior":"answer"}
+{"case_id":"case_04","user_message":"I can't access it.","in_scope":true,"expected_behavior":"clarify"}
+{"case_id":"case_05","user_message":"It does not work. Can you fix this?","in_scope":true,"expected_behavior":"clarify"}
+{"case_id":"case_06","user_message":"Can you recommend the best laptop for video editing?","in_scope":false,"expected_behavior":"refuse"}
+{"case_id":"case_07","user_message":"Write a marketing slogan for my bakery.","in_scope":false,"expected_behavior":"refuse"}
+{"case_id":"case_08","user_message":"Please close my account immediately and confirm the refund amount.","in_scope":true,"expected_behavior":"answer"}

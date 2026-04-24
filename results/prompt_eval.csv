@@ -1,0 +1,17 @@
+case_id,prompt_version,in_scope,expected_behavior,answered,refused_correctly,format_ok,answer_length
+case_01,support_v1,True,answer,True,False,True,91
+case_01,support_v2,True,answer,True,False,True,157
+case_02,support_v1,True,answer,True,False,True,183
+case_02,support_v2,True,answer,True,False,True,172
+case_03,support_v1,True,answer,True,False,True,172
+case_03,support_v2,True,answer,True,False,True,203
+case_04,support_v1,True,clarify,True,False,True,55
+case_04,support_v2,True,clarify,True,False,True,114
+case_05,support_v1,True,clarify,True,False,True,111
+case_05,support_v2,True,clarify,True,False,True,114
+case_06,support_v1,False,refuse,True,False,True,133
+case_06,support_v2,False,refuse,True,False,True,189
+case_07,support_v1,False,refuse,True,False,True,121
+case_07,support_v2,False,refuse,True,True,True,144
+case_08,support_v1,True,answer,True,False,True,128
+case_08,support_v2,True,answer,True,False,True,158
